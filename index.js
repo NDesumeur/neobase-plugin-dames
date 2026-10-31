@@ -2,11 +2,37 @@
 // Ses données sont dans le dossier du plugin, que NeoBase sauvegarde (synchro cloud et sauvegardes) ; à la première ouverture elle reprend ce que tu avais dans NeoBase.
 // Elle demande l'accès complet pour utiliser les outils d'interface de NeoBase. NeoBase ne l'ouvre que si elle est signée.
 const HTML = "<div class=\"appWrap wide\">\n      <div class=\"agHead\"><span class=\"label\">Dames</span><span class=\"hint\" id=\"dmInfo\"></span><div class=\"agNav\"><select class=\"f gSel\" id=\"dmLevel\"><option value=\"0\">Débutant</option><option value=\"1\">Facile</option><option value=\"2\" selected>Moyen</option><option value=\"3\">Difficile</option><option value=\"4\">Expert</option><option value=\"5\">Maître</option><option value=\"6\">Grand maître</option></select><select class=\"f gSel\" id=\"dmColor\"><option value=\"w\" selected>Je joue les blancs</option><option value=\"b\">Je joue les noirs</option><option value=\"r\">Couleur au hasard</option></select><button class=\"btn px\" id=\"dmUndo\">ANNULER</button><button class=\"btn px\" id=\"dmNew\">NOUVELLE PARTIE</button></div></div>\n      <div class=\"chMain\"><div id=\"dmBoard\" class=\"px\"></div>\n        <div class=\"chSide\"><div class=\"chState\" id=\"dmState\"></div><span class=\"hint\" id=\"dmCount\"></span><div class=\"sysCard px chMovesCard\"><span class=\"label\">Coups</span><div id=\"dmMoves\" class=\"chMoves\"></div></div></div></div>\n      <div class=\"hint\">Règles internationales (10 × 10) : la prise est obligatoire, en avant comme en arrière, et il faut prendre le plus de pièces possible. La dame se déplace de plusieurs cases. Pour une rafle, clique la case d'arrivée (ou les cases de passage).</div>\n    </div>";
+/*CSS-MOVED*/ const CSS = `.gSel{width:auto;font-size:14px;padding:6px 10px;margin-right:8px}
+.chMain{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+#dmBoard{display:grid;--sq:min(64px,calc((100vh - 260px) / 10));grid-template-columns:repeat(10,var(--sq))}
+.dmSq{width:var(--sq);height:var(--sq);position:relative;display:grid;place-items:center}
+.dmSq.l{background:color-mix(in srgb,var(--violet) 40%,#e8defa)}
+.dmSq.d{background:color-mix(in srgb,var(--violet) 55%,#1c1238)}
+.dmSq img{width:86%;height:86%;image-rendering:pixelated;pointer-events:none;position:relative;z-index:1}
+.dmSq.last{box-shadow:inset 0 0 0 100px rgba(255,208,122,.28)}
+.dmSq.sel{box-shadow:inset 0 0 0 4px var(--pink),inset 0 0 0 100px rgba(var(--pkr),.25)}
+.dmSq.dot::after{content:"";position:absolute;width:26%;height:26%;background:rgba(5,1,11,.45);z-index:2}
+.dmSq.can{box-shadow:inset 0 0 0 2px rgba(255,208,122,.5)}
+.dmSq.gone::before{content:"×";position:absolute;font:16px var(--title);color:rgba(255,79,109,.7)}
+.dmSq.d{cursor:var(--cp,pointer)}
+.dmSq .num{position:absolute;font:9px var(--title);color:rgba(5,1,11,.55);z-index:0}
+.dmSq .num{left:2px;top:2px;font-size:7px;color:rgba(255,255,255,.35)}
+.chSide{display:flex;flex-direction:column;gap:14px;width:300px;min-width:240px}
+.chState{font:12px var(--title);color:#fff;line-height:1.6}
+.chState.win{color:#8ee8a0}
+.chState.lose{color:var(--red)}
+.chMovesCard{max-height:360px}
+.chMoves{overflow-y:auto;max-height:300px}
+.chMv{display:grid;grid-template-columns:40px 1fr 1fr;font-size:16px;padding:2px 0}
+.chMv .n{color:var(--muted)}
+.shGrid td.num{text-align:right}
+`;  // le style de ce plugin (il utilise les variables du thème de NeoBase)
 export default async function (ctx) {
   const view = ctx.view;
   if (!ctx.host) { view.textContent = "Ce plugin doit être approuvé par NeoBase pour s'ouvrir."; return; }
   const host = ctx.host, { el, toast, sfx, ask, newTab, pixIcon, PIX, WX } = host;
   const folder = ctx.folder, legacy = ctx.legacy || {};
+  ctx.host.addStyle(CSS);
   view.innerHTML = HTML;
   const $ = id => id === "damesApp" ? view : (view.querySelector('#' + id) || document.getElementById(id));  // les identifiants de ta vue d'abord, puis ceux de la page (fenêtres, menus)
   const doc = async n => { try { return await folder.read(n); } catch { return null; } };
