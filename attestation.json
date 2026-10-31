@@ -1,0 +1,9 @@
+{
+  "pluginId": "neobase.dames",
+  "repo": "NDesumeur/neobase-plugin-dames",
+  "version": "1.0.0",
+  "sha256": "ae5e33a52f34b80e49f87eae8db8f92ed4e7d7b8ae75fb8c551398556836a6d1",
+  "approvedAt": "2026-10-31T16:22:01.608Z",
+  "neobase": ">=4.0.0",
+  "signature": "Ue0jx3dVyBPcqs/AcVUd+2tPMhrTdgJs3GWbtCTTf6J+PBT6NYXq8d18ErZhdQtte+KKFeFWtqRAbe8L5USbCA=="
+}
