@@ -1,6 +1,6 @@
 // Dames : ton appli d'origine (HTML et code inchangés), livrée en plugin.
-// Ses données sont dans le dossier du plugin, que NeoBase sauvegarde (synchro cloud et sauvegardes) ; à la première ouverture elle reprend ce que tu avais dans NeoBase.
-// Elle tourne dans le bac à sable de NeoBase, avec ses outils d'interface (ctx.host) et seulement les autorisations de son plugin.json.
+// Ses données sont dans le dossier du plugin, que NeoDex sauvegarde (synchro cloud et sauvegardes) ; à la première ouverture elle reprend ce que tu avais dans NeoDex.
+// Elle tourne dans le bac à sable de NeoDex, avec ses outils d'interface (ctx.host) et seulement les autorisations de son plugin.json.
 const HTML = "<div class=\"appWrap wide\">\n      <div class=\"agHead\"><span class=\"label\">Dames</span><span class=\"hint\" id=\"dmInfo\"></span><div class=\"agNav\"><select class=\"f gSel\" id=\"dmLevel\"><option value=\"0\">Débutant</option><option value=\"1\">Facile</option><option value=\"2\" selected>Moyen</option><option value=\"3\">Difficile</option><option value=\"4\">Expert</option><option value=\"5\">Maître</option><option value=\"6\">Grand maître</option></select><select class=\"f gSel\" id=\"dmColor\"><option value=\"w\" selected>Je joue les blancs</option><option value=\"b\">Je joue les noirs</option><option value=\"r\">Couleur au hasard</option></select><button class=\"btn px\" id=\"dmUndo\">ANNULER</button><button class=\"btn px\" id=\"dmNew\">NOUVELLE PARTIE</button></div></div>\n      <div class=\"chMain\"><div id=\"dmBoard\" class=\"px\"></div>\n        <div class=\"chSide\"><div class=\"chState\" id=\"dmState\"></div><span class=\"hint\" id=\"dmCount\"></span><div class=\"sysCard px chMovesCard\"><span class=\"label\">Coups</span><div id=\"dmMoves\" class=\"chMoves\"></div></div></div></div>\n      <div class=\"hint\">Règles internationales (10 × 10) : la prise est obligatoire, en avant comme en arrière, et il faut prendre le plus de pièces possible. La dame se déplace de plusieurs cases. Pour une rafle, clique la case d'arrivée (ou les cases de passage).</div>\n    </div>";
 /*CSS-MOVED*/ const CSS = `.gSel{width:auto;font-size:14px;padding:6px 10px;margin-right:8px}
 .chMain{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
@@ -26,10 +26,10 @@ const HTML = "<div class=\"appWrap wide\">\n      <div class=\"agHead\"><span cl
 .chMv{display:grid;grid-template-columns:40px 1fr 1fr;font-size:16px;padding:2px 0}
 .chMv .n{color:var(--muted)}
 .shGrid td.num{text-align:right}
-`;  // le style de ce plugin (il utilise les variables du thème de NeoBase)
+`;  // le style de ce plugin (il utilise les variables du thème de NeoDex)
 export default async function (ctx) {
   const view = ctx.view;
-  if (!ctx.host) { view.textContent = "Ce plugin doit être approuvé par NeoBase pour s'ouvrir."; return; }
+  if (!ctx.host) { view.textContent = "Ce plugin doit être approuvé par NeoDex pour s'ouvrir."; return; }
   const host = ctx.host, { el, toast, sfx, ask, newTab, pixIcon, PIX, WX } = host;
   const folder = ctx.folder, legacy = ctx.legacy || {};
   ctx.host.addStyle(CSS);
