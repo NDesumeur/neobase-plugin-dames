@@ -1,7 +1,7 @@
 {
   "id": "neodex.dames",
   "name": "Dames",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "NDesumeur",
   "description": "Des dames internationales (10 × 10) contre l'ordinateur ; la partie en cours est gardée.",
   "icon": "icon.png",
